@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Statement</title>
+    <style>
+        @page {
+            size: A4 portrait;
+            margin-top: 150px;
+            margin-bottom: 120px;
+
+            @top-center {
+                content: element(header);
+            }
+            @bottom-center {
+                content: element(footer-image);
+            }
+            @bottom-right {
+                content: "Page " counter(page) " of " counter(pages);
+                font-size: 10px;
+                color: #555;
+            }
+        }
+
+        .page-number {
+            text-align: right;
+            font-size: 10px;
+            color: #555;
+        }
+
+        .page-number::after {
+            content: "Page " counter(page) " of " counter(pages);
+        }
+
+        .header {
+            position: running(header);
+        }
+
+        .footer {
+            position: running(footer);
+        }
+
+        .header .logo {
+            text-align: right;
+            padding-right: 0;
+        }
+
+        .header .logo img {
+            max-width: 280px;
+            max-height: 120px;
+        }
+
+        .header-border {
+            border-bottom: 2px solid #000000;
+            margin-top: 10px;
+        }
+
+        .footer-image {
+            position: running(footer-image);
+            width: 100%;
+            height: 50px;
+            display: block;
+        }
+        .footer-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-size: 11px;
+            color: #212529;
+            margin: 0;
+        }
+
+        .main-content {
+            padding: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 7px 5px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .address {
+            line-height: 1.6;
+            font-size: 9.5px;
+            font-weight: 500;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            margin-top: 30px;
+        }
+
+        .section-title {
+            background-color: #bfbfbf;
+            color: #fff;
+            font-weight: bold;
+            padding: 5px 12px;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .details-table {
+            margin: 15px 5px 0 5px;
+        }
+        .details-table td {
+            padding: 5px 0;
+            font-size: 12px;
+        }
+        .details-table td:first-child {
+            width: 130px;
+        }
+
+        .data-table {
+            margin-top: 5px;
+        }
+
+        .data-table th {
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #000000;
+            padding-bottom: 10px;
+            padding-top: 15px;
+            white-space: nowrap;
+        }
+
+        .data-table tfoot td {
+            font-weight: bold;
+            padding-top: 10px;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .fund-name {
+            padding: 20px 0 5px 5px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .transaction-line {
+            border: 0;
+            height: 1px;
+            background-color: #000;
+            margin: 15px 0;
+        }
+
+        .end-statement-group {
+            text-align: center;
+            margin: 60px 0 20px 0;
+            page-break-inside: avoid;
+        }
+        .end-statement-group .end-title {
+            font-weight: bold;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        .end-statement-group .end-subtext {
+            color: #000000;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="logo">
+        <img src="https://res.cloudinary.com/dculivch8/image/upload/v1758797208/logo_dqdoh5.png" alt="Logo" />
+    </div>
+    <div class="header-border"></div>
+</div>
+
+<div class="footer">
+    <div class="footer-image" id="footer-image">
+        <img src="https://res.cloudinary.com/dculivch8/image/upload/v1758797122/footer_thrrsi.png" alt="Footer Image" />
+    </div>
+</div>
+
+<div class="main-content">
+    <section class="section">
+        <div class="address">
+            <strong th:text="${investorName}">Barnes Felicia</strong><br />
+            <th:block th:each="line : ${investorAddress}">
+                <span th:text="${line}">272 Jute Street</span><br />
+            </th:block>
+        </div>
+        <div class="section-title">Statement of Account</div>
+        <table class="details-table">
+            <tbody>
+            <tr>
+                <td>Investor Name:</td>
+                <td th:text="${investorName}">Barnes Felicia</td>
+            </tr>
+            <tr>
+                <td>Investor Code:</td>
+                <td th:text="${investorCode}">PCROSSCAT</td>
+            </tr>
+            <tr>
+                <td>Adviser:</td>
+                <td th:text="${adviser}">Lopez (AD0000790001)</td>
+            </tr>
+            <tr>
+                <td>Statement Period:</td>
+                <td th:text="${statementPeriod}">1 June 2024 - 1 October 2024</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="section">
+        <div class="section-title">Investment Summary</div>
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th>AS OF DATE</th>
+                <th>INVESTMENT FUND</th>
+                <th>PRICE TYPE</th>
+                <th class="text-right">UNIT PRICE</th>
+                <th class="text-right">UNITS HELD</th>
+                <th class="text-right">MARKET VALUE</th>
+            </tr>
+            </thead>
+            <tbody th:each="investment : ${investments}">
+            <tr>
+                <td th:text="${investment.asOfDate}">01/10/2024</td>
+                <td th:text="${investment.fundName}">Allen Masked Investment Fund</td>
+                <td th:text="${investment.priceType}">RED</td>
+                <td class="text-right" th:text="${#numbers.formatDecimal(investment.unitPrice, 1, 4)}">1.8662</td>
+                <td class="text-right" th:text="${#numbers.formatDecimal(investment.unitsHeld, 1, 2)}">138,916.95</td>
+                <td class="text-right" th:text="${#numbers.formatDecimal(investment.marketValue, 1, 2)}">259,246.81</td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="5">Total Investment</td>
+                <td class="text-right" th:text="${#numbers.formatDecimal(totalInvestment, 1, 2)}">259,246.81</td>
+            </tr>
+            </tfoot>
+        </table>
+    </section>
+
+    <section class="section">
+        <div class="section-title">Transaction Details</div>
+        <div class="fund-name" th:text="'Fund Name: ' + ${fundName}">Fund Name: Allen Masked Investment Fund</div>
+
+        <hr class="transaction-line" />
+
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th>DATE</th>
+                <th>TRANSACTION</th>
+                <th class="text-right">MARKET VALUE</th>
+                <th class="text-right">PRICE TYPE</th>
+                <th class="text-right">UNIT PRICE</th>
+                <th class="text-right">NO. OF UNITS</th>
+                <th class="text-right">UNIT BALANCE</th>
+            </tr>
+            </thead>
+            <tbody th:each="transaction : ${transactions}">
+            <tr>
+                <td th:text="${transaction.date}">01/06/2024</td>
+                <td th:text="${transaction.type}">Opening Balance</td>
+                <td class="text-right" th:text="${transaction.marketValue != null ? #numbers.formatDecimal(transaction.marketValue, 1, 2) : ''}"></td>
+                <td class="text-right" th:text="${transaction.priceType}"></td>
+                <td class="text-right" th:text="${transaction.unitPrice != null ? #numbers.formatDecimal(transaction.unitPrice, 1, 4) : ''}"></td>
+                <td class="text-right" th:text="${transaction.units != null ? #numbers.formatDecimal(transaction.units, 1, 2) : ''}"></td>
+                <td class="text-right" th:text="${transaction.balance != null ? #numbers.formatDecimal(transaction.balance, 1, 2) : ''}">138,916.95</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <hr class="transaction-line" />
+    </section>
+
+    <div class="end-statement-group">
+        <div class="end-title">END OF STATEMENT</div>
+        <div class="end-subtext">Thank you for investing with Masked</div>
+    </div>
+</div>
+
+</body>
+</html>
