@@ -1,5 +1,3 @@
-// In: pdf-generator/src/main/java/com/nextechvision/pdf_generator/service/PdfService.java
-
 package com.nextechvision.pdf_generator.service;
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
@@ -31,8 +29,7 @@ public class PdfService {
             PdfRendererBuilder builder = new PdfRendererBuilder();
             builder.useFastMode();
 
-            // This is the most reliable way to set the base URI for local resources.
-            // It correctly points to your project's `resources` directory.
+
             String baseUri = FileSystems.getDefault()
                     .getPath("src", "main", "resources", "static")
                     .toUri()
